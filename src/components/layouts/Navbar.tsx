@@ -14,9 +14,12 @@ export default function Navbar() {
           </div>
           <div className="hidden md:block">
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-gray-300">
-                Products
-              </a>
+              <Link to="/">
+                <a href="#" className="text-white hover:text-gray-300">
+                  Products
+                </a>
+              </Link>
+
               <a href="#" className="text-white hover:text-gray-300">
                 Orders
               </a>

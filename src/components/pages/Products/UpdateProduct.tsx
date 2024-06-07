@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
+import Navbar from "../../layouts/Navbar"
+import Footer from "../Footer"
 
 interface Variant {
   id: number
@@ -70,82 +72,86 @@ const EditProduct: React.FC = () => {
   if (!formData) return <p>Loading...</p>
 
   return (
-    <div className="container mx-auto px-4">
-      <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md"
-      >
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Brand</label>
-          <input
-            type="text"
-            name="brand"
-            value={formData.brand}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Type</label>
-          <input
-            type="text"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Origin</label>
-          <input
-            type="text"
-            name="origin"
-            value={formData.origin}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Price</label>
-          <input
-            type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        {/* Add more fields as needed */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Save Changes
-          </button>
-        </div>
-      </form>
-    </div>
+    <>
+      <Navbar />
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-6 rounded-lg shadow-md"
+        >
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Brand</label>
+            <input
+              type="text"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Type</label>
+            <input
+              type="text"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Origin</label>
+            <input
+              type="text"
+              name="origin"
+              value={formData.origin}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          {/* Add more fields as needed */}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      <Footer />
+    </>
   )
 }
 
