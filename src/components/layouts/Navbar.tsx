@@ -1,80 +1,47 @@
 /* eslint-disable prettier/prettier */
 // import React from 'react';
-import { Link } from "react-router-dom";
-import { useAppSelector,useAppDispatch} from '../../app/hooks';
-import { setUser } from '../../features/user/userSlice';
-import { signOut } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { Link } from "react-router-dom"
+
 export default function Navbar() {
-  const {user}=useAppSelector((state)=>state.user)
-  const dispatch=useAppDispatch()
-const  handleLogout = (): void => {
-  // const dispatch = useDispatch();
-
-  signOut(auth).then(() => {
-    // Clear local storage
-    window.localStorage.clear();
-
-    // Dispatch setUser action
-    dispatch(setUser(null));
-
-    // Sign-out successful.
-  });
-};
-  console.log(user)
   return (
-    <nav className="bg-gray-800 py-4">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <span className="text-white font-bold text-xl">Books Catalogue</span>
+    <nav className="bg-gray-800 p-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center">
+          <div className="flex-shrink-0">
+            <a href="#" className="text-white font-bold text-xl">
+              Product Management System
+            </a>
+          </div>
+          <div className="hidden md:block">
+            <div className="flex space-x-4">
+              <a href="#" className="text-white hover:text-gray-300">
+                Products
+              </a>
+              <a href="#" className="text-white hover:text-gray-300">
+                Orders
+              </a>
             </div>
           </div>
-          <div className="ml-4 flex items-center md:ml-6">
-          {user.email  &&  <Link
-              to="/allbooks"
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-            >
-              All Books
-            </Link>}
-            {user.email && <Link
-              to="/addnew"
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-            >
-              Add NewBook
-            </Link>}
-            {user.email && <Link
-              to="/wishlist"
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-            >
-              WishList
-            </Link>}
-            { !user.email &&  <Link
-              to="/signup"
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-            >
-              SignUp
-            </Link>}
-            { !user.email &&  <Link
-              to="/login"
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-            >
-           SignIn
-            </Link>}
-            { user.email &&  <Link
-              to=""
-              onClick={handleLogout} 
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-            >
-           SignOut
-            </Link>}
-         
+          <div className="md:hidden">
+            <button className="text-white focus:outline-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
     </nav>
-  );
-};
-
-
+  )
+}

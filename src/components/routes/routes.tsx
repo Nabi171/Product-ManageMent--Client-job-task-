@@ -1,61 +1,23 @@
 /* eslint-disable prettier/prettier */
 
 import { createBrowserRouter } from "react-router-dom"
-import App from '../../App'
-import LoginForm from '../pages/LoginForm'
-import SignUpForm from '../pages/SignUpForm'
-import AllBooks from '../pages/Books/AllBooks'
-import Books from '../pages/Books/Books'
-import BookDetails from '../pages/Books/BookDetails'
-import AddNew from '../pages/Books/AddNew'
-import EditeBook from '../pages/Books/EditeBook'
-import Wishlist from '../pages/Wishlist/Wishlist'
-import PrivateRoute from '../routes/PrivateRoute'
+import App from "../../App"
+import ProductDetails from "../pages/Products/DetailViewProduct"
+import EditProduct from "../pages/Products/UpdateProduct"
 
 const routes = createBrowserRouter([
-  
-   
   {
     path: "/",
-    element: 
-    <PrivateRoute>
-         <App />
-    </PrivateRoute>,
-    
+    element: <App />,
   },
   {
-    path: "/login",
-    // eslint-disable-next-line react/jsx-no-undef
-    element: <LoginForm />,
+    path: "/products/:id",
+    element: <ProductDetails />,
   },
   {
-    path: "/signup",
-    element: <SignUpForm />,
+    path: "/products/edit/:id",
+    element: <EditProduct />,
   },
-  {
-    path: `allbooks/bookdetails/:bookId`,
-    element: <BookDetails />,
-  },
-  {
-    path: "/allbooks",
-    element:
-    <PrivateRoute>
-         <Books />
-    </PrivateRoute>,
-  },
-  {
-    path: "/addnew",
-    element: <AddNew />,
-  },
-  {
-    path: "/edit/:editId",
-    element: <EditeBook />,
-  },
-  {
-    path: "/wishlist",
-    element: <Wishlist />,
-  },
-
 ])
 
 export default routes
