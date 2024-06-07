@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import Navbar from "../../layouts/Navbar"
+import Footer from "../Footer"
 
 interface Variant {
   id: number
@@ -99,7 +101,9 @@ const ProductDetails: React.FC = () => {
 
   return (
     <>
+      <Navbar />
       <div>{prod}</div>
+      <Footer />
     </>
   )
 }
