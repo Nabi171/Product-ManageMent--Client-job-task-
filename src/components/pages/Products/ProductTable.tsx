@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Product } from "../../types/globalTypes"
 
-interface Product {
-  id: number
-  name: string
-  brand: string
-  type: string
-  created_at: string
-}
-
-const ProductTable: React.FC = () => {
+export default function ProductTable() {
   const navigate = useNavigate()
 
   const [products, setProducts] = useState<Product[]>([])
@@ -112,5 +105,3 @@ const ProductTable: React.FC = () => {
     </div>
   )
 }
-
-export default ProductTable

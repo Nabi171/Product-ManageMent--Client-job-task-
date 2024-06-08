@@ -2,17 +2,16 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import userReducer from "../features/user/userSlice"
 import { api } from "../../src/components/api/apiSlice"
-import bookReducer from '../features/books/booksSlice';
+// import bookReducer from '../features/books/booksSlice';
 
 export const store = configureStore({
   reducer: {
-    books: bookReducer,
+    // books: bookReducer,
     user: userReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-  
-  getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware().concat(api.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

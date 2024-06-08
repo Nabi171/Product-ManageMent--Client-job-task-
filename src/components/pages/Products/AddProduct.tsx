@@ -1,26 +1,15 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
 import Footer from "../Footer"
+import {
+  ProductForCreate,
+  UniVersalType,
+  VariantForCreate,
+} from "../../types/globalTypes"
 
-interface Variant {
-  color: string
-  specification: string
-  size: string
-}
-
-interface Product {
-  name: string
-  brand: string
-  type: string
-  origin: string
-  description: string
-  price: number
-  variants: Variant[]
-}
-
-const CreateProduct: React.FC = () => {
-  const [product, setProduct] = useState<Product>({
+export default function CreateProduct() {
+  const [product, setProduct] = useState<ProductForCreate>({
     name: "",
     brand: "",
     type: "",
@@ -30,7 +19,7 @@ const CreateProduct: React.FC = () => {
     variants: [],
   })
 
-  const [variant, setVariant] = useState<Variant>({
+  const [variant, setVariant] = useState<VariantForCreate>({
     color: "",
     specification: "",
     size: "",
@@ -38,16 +27,14 @@ const CreateProduct: React.FC = () => {
 
   const navigate = useNavigate()
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: UniVersalType) => {
     setProduct({
       ...product,
       [e.target.name]: e.target.value,
     })
   }
 
-  const handleVariantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVariantChange = (e: UniVersalType) => {
     setVariant({
       ...variant,
       [e.target.name]: e.target.value,
@@ -66,7 +53,7 @@ const CreateProduct: React.FC = () => {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: UniVersalType) => {
     e.preventDefault()
     // Simulated API call to create product data
     fetch(`https://reactjr.coderslab.online/api/products`, {
@@ -290,5 +277,3 @@ const CreateProduct: React.FC = () => {
     </>
   )
 }
-
-export default CreateProduct

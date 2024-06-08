@@ -1,32 +1,10 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
 import Footer from "../Footer"
+import { Product } from "../../types/globalTypes"
 
-interface Variant {
-  id: number
-  product_id: number
-  color: string
-  specification: string
-  size: string
-  created_at: string
-  updated_at: string
-}
-
-interface Product {
-  id: number
-  name: string
-  brand: string
-  type: string
-  origin: string
-  created_at: string
-  updated_at: string
-  description: string
-  price: number
-  variants: Variant[]
-}
-
-const ProductDetails: React.FC = () => {
+export default function ProductDetails() {
   const { id } = useParams<{ id: string }>()
   const [product, setProduct] = useState<Product | null>(null)
   console.log(product)
@@ -37,7 +15,7 @@ const ProductDetails: React.FC = () => {
       .then((data) => setProduct(data?.data || []))
   }, [])
 
-  const prod = !product ? (
+  const ShowProductTable = !product ? (
     <div className="container mx-auto px-4">
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
@@ -104,10 +82,8 @@ const ProductDetails: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div>{prod}</div>
+      <div>{ShowProductTable}</div>
       <Footer />
     </>
   )
 }
-
-export default ProductDetails

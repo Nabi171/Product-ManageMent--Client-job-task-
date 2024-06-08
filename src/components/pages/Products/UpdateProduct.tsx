@@ -1,32 +1,10 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
 import Footer from "../Footer"
+import { Product, UniVersalType } from "../../types/globalTypes"
 
-interface Variant {
-  id: number
-  product_id: number
-  color: string
-  specification: string
-  size: string
-  created_at: string
-  updated_at: string
-}
-
-interface Product {
-  id: number
-  name: string
-  brand: string
-  type: string
-  origin: string
-  created_at: string
-  updated_at: string
-  description: string
-  price: number
-  variants: Variant[]
-}
-
-const EditProduct: React.FC = () => {
+export default function EditProduct() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [product, setProduct] = useState<Product | null>(null)
@@ -44,14 +22,12 @@ const EditProduct: React.FC = () => {
       .catch((error) => console.error("Error fetching product:", error))
   }, [id])
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: UniVersalType) => {
     const { name, value } = e.target
     setFormData((prevData) => prevData && { ...prevData, [name]: value })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: UniVersalType) => {
     e.preventDefault()
     // Implement API call to update product data
     fetch(`https://reactjr.coderslab.online/api/products/${id}`, {
@@ -161,5 +137,3 @@ const EditProduct: React.FC = () => {
     </>
   )
 }
-
-export default EditProduct
