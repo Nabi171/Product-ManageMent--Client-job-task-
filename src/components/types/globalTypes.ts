@@ -29,6 +29,7 @@ export interface VariantForCreate {
 }
 
 export interface ProductForCreate {
+  [x: string]: any
   name: string
   brand: string
   type: string
@@ -39,3 +40,19 @@ export interface ProductForCreate {
 }
 
 export type UniVersalType = any
+
+export interface UserInfo {
+  name: string
+  address: string
+  email: string
+}
+
+export interface OrderDetail {
+  variant_id: number
+  quantity: number
+}
+
+export interface OrderForCreate {
+  user: UserInfo
+  details: OrderDetail[]
+}

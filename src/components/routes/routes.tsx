@@ -7,6 +7,8 @@ import EditProduct from "../pages/Products/UpdateProduct"
 import CreateProduct from "../pages/Products/AddProduct"
 import OrderList from "../pages/Orders/OrderList"
 import CreateOrder from "../pages/Orders/CreateOrder"
+import OrderDetails from "../pages/Orders/OrderDetails"
+import EditOrder from "../pages/Orders/EditOrder"
 
 const routes = createBrowserRouter([
   {
@@ -33,10 +35,14 @@ const routes = createBrowserRouter([
     path: "/orders/create",
     element: <CreateOrder />,
   },
-  // {
-  //   path: "/products/create",
-  //   element: <CreateProduct />,
-  // },
+  {
+    path: "/orders/:id",
+    element: <OrderDetails />,
+  },
+  {
+    path: "/orders/edit/:id",
+    element: <EditOrder />,
+  },
 ])
 
 export default routes

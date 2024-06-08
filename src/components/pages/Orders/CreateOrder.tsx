@@ -1,30 +1,41 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
 import Footer from "../Footer"
+import {
+  Product,
+  Variant,
+  UserInfo,
+  OrderDetail,
+  OrderForCreate,
+} from "../../types/globalTypes"
 
-const CreateOrder = () => {
+const CreateOrder: React.FC = () => {
   const navigate = useNavigate()
-  const [products, setProducts] = useState([])
-  const [selectedProducts, setSelectedProducts] = useState([])
-  const [variants, setVariants] = useState({})
-  const [quantities, setQuantities] = useState({})
-  const [userInfo, setUserInfo] = useState({ name: "", address: "", email: "" })
-  const [step, setStep] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [products, setProducts] = useState<Product[]>([])
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([])
+  const [variants, setVariants] = useState<{ [key: number]: number }>({})
+  const [quantities, setQuantities] = useState<{ [key: number]: number }>({})
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    name: "",
+    address: "",
+    email: "",
+  })
+  const [step, setStep] = useState<number>(1)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
 
   useEffect(() => {
     fetch("https://reactjr.coderslab.online/api/products")
       .then((response) => response.json())
       .then((data) => setProducts(data.data.data))
-      .catch((err) => setError("Failed to fetch products"))
+      .catch(() => setError("Failed to fetch products"))
   }, [])
 
   const handleNext = () => setStep(step + 1)
   const handleBack = () => setStep(step - 1)
 
-  const handleProductChange = (productId, isChecked) => {
+  const handleProductChange = (productId: number, isChecked: boolean) => {
     setSelectedProducts(
       isChecked
         ? [...selectedProducts, productId]
@@ -32,22 +43,22 @@ const CreateOrder = () => {
     )
   }
 
-  const handleVariantChange = (productId, variantId) => {
+  const handleVariantChange = (productId: number, variantId: number) => {
     setVariants({ ...variants, [productId]: variantId })
   }
 
-  const handleQuantityChange = (productId, quantity) => {
+  const handleQuantityChange = (productId: number, quantity: number) => {
     setQuantities({ ...quantities, [productId]: quantity })
   }
 
-  const handleUserInfoChange = (e) => {
+  const handleUserInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setUserInfo({ ...userInfo, [name]: value })
   }
 
   const handleSubmit = () => {
     setLoading(true)
-    const orderData = {
+    const orderData: OrderForCreate = {
       user: userInfo,
       details: selectedProducts.map((productId) => ({
         variant_id: variants[productId],
@@ -137,15 +148,17 @@ const CreateOrder = () => {
                       key={productId}
                       className="bg-white shadow-md rounded-lg p-6"
                     >
-                      <h3 className="text-xl font-bold mb-4">{product.name}</h3>
+                      <h3 className="text-xl font-bold mb-4">
+                        {product?.name}
+                      </h3>
                       <select
                         onChange={(e) =>
-                          handleVariantChange(productId, e.target.value)
+                          handleVariantChange(productId, Number(e.target.value))
                         }
                         className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md"
                       >
                         <option value="">Select Variant</option>
-                        {product.variants.map((variant) => (
+                        {product?.variants.map((variant) => (
                           <option key={variant.id} value={variant.id}>
                             {variant.color} - {variant.specification} -{" "}
                             {variant.size}
@@ -187,12 +200,12 @@ const CreateOrder = () => {
                     key={productId}
                     className="bg-white shadow-md rounded-lg p-6"
                   >
-                    <h3 className="text-xl font-bold mb-4">{product.name}</h3>
+                    <h3 className="text-xl font-bold mb-4">{product?.name}</h3>
                     <input
                       type="number"
                       min="1"
                       onChange={(e) =>
-                        handleQuantityChange(productId, e.target.value)
+                        handleQuantityChange(productId, Number(e.target.value))
                       }
                       className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md"
                     />

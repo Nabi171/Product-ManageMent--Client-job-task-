@@ -55,13 +55,27 @@ export default function CreateProduct() {
 
   const handleSubmit = (e: UniVersalType) => {
     e.preventDefault()
+    // Prepare data in the required format
+    const requestData = {
+      data: {
+        ...product,
+        variants: product.variants.map((v, index) => ({
+          ...v,
+          id: index + 1,
+          product_id: product.id,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })),
+      },
+    }
+
     // Simulated API call to create product data
     fetch(`https://reactjr.coderslab.online/api/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(requestData),
     })
       .then(async (response) => {
         const contentType = response.headers.get("content-type")
@@ -80,6 +94,35 @@ export default function CreateProduct() {
         console.error("Error creating product:", error)
       })
   }
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault()
+  //   console.log(product)
+  //   // Simulated API call to create product data
+  //   fetch(`https://reactjr.coderslab.online/api/products`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(product),
+  //   })
+  //     .then(async (response) => {
+  //       const contentType = response.headers.get("content-type")
+  //       if (contentType && contentType.includes("application/json")) {
+  //         return response.json()
+  //       } else {
+  //         const text = await response.text()
+  //         throw new Error(`Unexpected response: ${text}`)
+  //       }
+  //     })
+  //     .then((data) => {
+  //       console.log("Product created:", data)
+  //       navigate(`/`)
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error creating product:", error)
+  //     })
+  // }
 
   return (
     <>
