@@ -9,17 +9,19 @@ export default function ProductTable() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
 
   useEffect(() => {
-    // Simulated API call to fetch product data
-    fetch("https://reactjr.coderslab.online/api/products")
+    fetch(`https://reactjr.coderslab.online/api/products?page=${currentPage}`)
       .then((response) => response.json())
       .then((data) => {
         setProducts(data?.data?.data || [])
         setFilteredProducts(data?.data?.data || [])
+        setTotalPages(data?.data?.last_page)
       })
       .catch((error) => console.error("Error fetching products:", error))
-  }, [])
+  }, [currentPage])
 
   const handleEdit = (id: number) => {
     navigate(`/products/edit/${id}`)
@@ -69,6 +71,36 @@ export default function ProductTable() {
     setFilteredProducts(filtered)
   }
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const renderPageNumbers = () => {
+    const pageNumbers = []
+    const maxPagesToShow = 10
+    const startPage =
+      Math.floor((currentPage - 1) / maxPagesToShow) * maxPagesToShow + 1
+    const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages)
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          className={`px-4 py-2 border ${
+            currentPage === i
+              ? "bg-gray-500 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+          }`}
+          onClick={() => handlePageChange(i)}
+        >
+          {i}
+        </button>,
+      )
+    }
+
+    return pageNumbers
+  }
+
   return (
     <div className="container mx-auto px-4 py-2">
       <div className="flex items-center justify-between mb-4">
@@ -80,16 +112,16 @@ export default function ProductTable() {
         </button>
         <input
           type="text"
-          placeholder="Search by name..."
+          placeholder="Search by name, brand, or type..."
           value={searchQuery}
           onChange={handleSearch}
           className="border border-gray-400 rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-amber-50 border border-gray-100">
+        <table className="min-w-full bg-white border border-gray-200">
           {/* Table headers */}
-          <thead className="bg-amber-50">
+          <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 border">ID</th>
               <th className="px-4 py-2 border">Name</th>
@@ -102,7 +134,7 @@ export default function ProductTable() {
           {/* Table body */}
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.id}>
+              <tr key={product.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 border">{product.id}</td>
                 <td className="px-4 py-2 border">{product.name}</td>
                 <td className="px-4 py-2 border">{product.brand}</td>
@@ -134,6 +166,37 @@ export default function ProductTable() {
         </table>
       </div>
       {error && <p className="text-red-500 mt-4">{error}</p>}
+      <div className="flex justify-center mt-4 space-x-1">
+        <button
+          className={`px-4 py-2 border rounded-l ${
+            currentPage === 1 ? "bg-gray-300" : "bg-gray-200 hover:bg-gray-300"
+          }`}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        {renderPageNumbers()}
+        {currentPage + 10 <= totalPages && (
+          <button
+            className="px-4 py-2 border bg-gray-200 hover:bg-gray-300"
+            onClick={() => handlePageChange(currentPage + 10)}
+          >
+            ...
+          </button>
+        )}
+        <button
+          className={`px-4 py-2 border rounded-r ${
+            currentPage === totalPages
+              ? "bg-gray-300"
+              : "bg-gray-200 hover:bg-gray-300"
+          }`}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   )
 }

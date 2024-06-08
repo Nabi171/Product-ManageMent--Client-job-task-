@@ -136,11 +136,11 @@ const CreateOrder = () => {
 
         {step === 2 && (
           <div className="flex justify-center items-center h-full">
-            <div className="container mx-auto px-4">
+            <div className="container  mx-auto px-4">
               <h2 className="text-3xl font-bold mb-6 text-center">
                 Select Variants
               </h2>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid text-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {selectedProducts.map((productId) => {
                   const product = products.find((p) => p.id === productId)
                   return (
@@ -189,7 +189,7 @@ const CreateOrder = () => {
 
         {step === 3 && (
           <div className="container mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold mb-6 text-center">
+            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
               Specify Quantities
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -200,9 +200,18 @@ const CreateOrder = () => {
                     key={productId}
                     className="bg-white shadow-md rounded-lg p-6"
                   >
-                    <h3 className="text-xl font-bold mb-4">{product?.name}</h3>
+                    <h3 className="text-xl font-bold mb-4 text-gray-700">
+                      {product?.name}
+                    </h3>
+                    <label
+                      htmlFor={`quantity-${productId}`}
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Quantity
+                    </label>
                     <input
                       type="number"
+                      id={`quantity-${productId}`}
                       min="1"
                       onChange={(e) =>
                         handleQuantityChange(productId, Number(e.target.value))
@@ -232,34 +241,58 @@ const CreateOrder = () => {
 
         {step === 4 && (
           <div className="container mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold mb-6 text-center">
+            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
               User Information
             </h2>
-            <div className="max-w-md mx-auto">
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={userInfo.name}
-                onChange={handleUserInfoChange}
-                className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md mb-2"
-              />
-              <input
-                type="text"
-                name="address"
-                placeholder="Address"
-                value={userInfo.address}
-                onChange={handleUserInfoChange}
-                className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md mb-2"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={userInfo.email}
-                onChange={handleUserInfoChange}
-                className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md mb-2"
-              />
+            <div className="max-w-lg mx-auto bg-white p-8 shadow-md rounded-lg">
+              <div className="mb-4">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  value={userInfo.name}
+                  onChange={handleUserInfoChange}
+                  className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Address"
+                  value={userInfo.address}
+                  onChange={handleUserInfoChange}
+                  className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={userInfo.email}
+                  onChange={handleUserInfoChange}
+                  className="block w-full py-2 px-3 border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                />
+              </div>
               <div className="mt-6 flex justify-center">
                 <button
                   onClick={handleBack}

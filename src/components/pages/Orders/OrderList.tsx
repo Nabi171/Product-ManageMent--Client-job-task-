@@ -34,17 +34,20 @@ const OrderList = () => {
   const [orders, setOrders] = useState<Order[]>([])
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
   const [searchQuery, setSearchQuery] = useState<string>("")
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch("https://reactjr.coderslab.online/api/orders")
+    fetch(`https://reactjr.coderslab.online/api/orders?page=${currentPage}`)
       .then((response) => response.json())
       .then((data: OrdersResponse) => {
         setOrders(data.data.data || [])
         setFilteredOrders(data.data.data || [])
+        setTotalPages(data.data.last_page)
       })
       .catch((error) => console.error("Error fetching data:", error))
-  }, [])
+  }, [currentPage])
 
   const handleDelete = (id: number) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
@@ -69,6 +72,10 @@ const OrderList = () => {
         order.id.toString().toLowerCase().includes(value.toLowerCase()),
     )
     setFilteredOrders(filtered)
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
   }
 
   return (
@@ -139,6 +146,33 @@ const OrderList = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="flex justify-center mt-4">
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              className={`${
+                currentPage === page ? "bg-gray-500" : "bg-gray-300"
+              } hover:bg-gray-400 text-gray-800 font-bold py-2 px-4`}
+              onClick={() => handlePageChange(page)}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
         </div>
       </div>
     </>
