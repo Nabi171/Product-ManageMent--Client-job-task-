@@ -69,7 +69,14 @@ const EditProduct: React.FC = () => {
       .catch((error) => console.error("Error updating product:", error))
   }
 
-  if (!formData) return <p>Loading...</p>
+  if (!formData)
+    return (
+      <div className="container mx-auto px-4">
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    )
 
   return (
     <>

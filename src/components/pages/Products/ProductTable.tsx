@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+
 interface Product {
   id: number
   name: string
   brand: string
   type: string
   created_at: string
-  // variants: {
-  //     color: string;
-  //     size: string;
-  // }[];
 }
 
 const ProductTable: React.FC = () => {
   const navigate = useNavigate()
 
   const [products, setProducts] = useState<Product[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     // Simulated API call to fetch product data
@@ -28,26 +26,46 @@ const ProductTable: React.FC = () => {
   const handleEdit = (id: number) => {
     navigate(`/products/edit/${id}`)
     console.log(`Edit product with ID: ${id}`)
-    // Implement edit functionality
   }
 
   const handleDelete = (id: number) => {
-    console.log(`Delete product with ID: ${id}`)
-    // Implement delete functionality
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      fetch(`https://reactjr.coderslab.online/api/products/${id}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error deleting product")
+          }
+          setProducts(products.filter((product) => product.id !== id))
+        })
+        .catch((error) => {
+          console.error("Error deleting product:", error)
+          setError("Failed to delete product. Please try again.")
+        })
+    }
   }
 
   const handleView = (id: number) => {
     navigate(`/products/${id}`)
+  }
 
-    // Implement view functionality
+  const handleCreate = () => {
+    navigate(`/products/create`)
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <h2 className="text-xl font-bold mb-4">Product Table</h2>
+    <div className="container mx-auto px-4 py-2">
+      {/* <h2 className="text-xl font-bold mb-4">Product Table</h2> */}
+      <button
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
+        onClick={handleCreate}
+      >
+        Create Product
+      </button>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
+        <table className="min-w-full bg-amber-50 border border-gray-100">
+          <thead className="bg-amber-50">
             <tr>
               <th className="px-4 py-2 border">ID</th>
               <th className="px-4 py-2 border">Name</th>
@@ -67,7 +85,7 @@ const ProductTable: React.FC = () => {
                 <td className="px-4 py-2 border">{product.created_at}</td>
                 <td className="px-4 py-2 border">
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2 border-2 border-blue-500"
                     onClick={() => handleView(product.id)}
                   >
                     View
@@ -90,6 +108,7 @@ const ProductTable: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   )
 }

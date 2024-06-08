@@ -39,7 +39,9 @@ const ProductDetails: React.FC = () => {
 
   const prod = !product ? (
     <div className="container mx-auto px-4">
-      <div className="text-center">Product not found</div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
     </div>
   ) : (
     <div className="container mx-auto px-4">

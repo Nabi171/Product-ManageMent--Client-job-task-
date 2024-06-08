@@ -4,25 +4,28 @@ import { Link } from "react-router-dom"
 
 export default function Navbar() {
   return (
-    <nav className="bg-gray-800 p-4">
+    <nav className="bg-gray-900 p-4 shadow-lg">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
-            <a href="#" className="text-white font-bold text-xl">
-              Product Management System
-            </a>
+            <Link to="/" className="text-white font-bold text-xl">
+              Product Management
+            </Link>
           </div>
           <div className="hidden md:block">
             <div className="flex space-x-4">
-              <Link to="/">
-                <a href="#" className="text-white hover:text-gray-300">
-                  Products
-                </a>
+              <Link
+                to="/"
+                className="text-white hover:text-gray-400 font-semibold"
+              >
+                Products
               </Link>
-
-              <a href="#" className="text-white hover:text-gray-300">
+              <Link
+                to="/orders"
+                className="text-white hover:text-gray-400 font-semibold"
+              >
                 Orders
-              </a>
+              </Link>
             </div>
           </div>
           <div className="md:hidden">
