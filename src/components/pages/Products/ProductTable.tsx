@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Product } from "../../types/globalTypes"
 
@@ -6,13 +6,18 @@ export default function ProductTable() {
   const navigate = useNavigate()
 
   const [products, setProducts] = useState<Product[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
+  const [searchQuery, setSearchQuery] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     // Simulated API call to fetch product data
     fetch("https://reactjr.coderslab.online/api/products")
       .then((response) => response.json())
-      .then((data) => setProducts(data?.data?.data || []))
+      .then((data) => {
+        setProducts(data?.data?.data || [])
+        setFilteredProducts(data?.data?.data || [])
+      })
       .catch((error) => console.error("Error fetching products:", error))
   }, [])
 
@@ -31,6 +36,9 @@ export default function ProductTable() {
             throw new Error("Error deleting product")
           }
           setProducts(products.filter((product) => product.id !== id))
+          setFilteredProducts(
+            filteredProducts.filter((product) => product.id !== id),
+          )
         })
         .catch((error) => {
           console.error("Error deleting product:", error)
@@ -47,17 +55,40 @@ export default function ProductTable() {
     navigate(`/products/create`)
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setSearchQuery(value)
+
+    const filtered = products.filter(
+      (product) =>
+        product.id.toString().toLowerCase().includes(value.toLowerCase()) ||
+        product.name.toLowerCase().includes(value.toLowerCase()) ||
+        product.brand.toLowerCase().includes(value.toLowerCase()) ||
+        product.type.toLowerCase().includes(value.toLowerCase()),
+    )
+    setFilteredProducts(filtered)
+  }
+
   return (
     <div className="container mx-auto px-4 py-2">
-      {/* <h2 className="text-xl font-bold mb-4">Product Table</h2> */}
-      <button
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
-        onClick={handleCreate}
-      >
-        Create Product
-      </button>
+      <div className="flex items-center justify-between mb-4">
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+          onClick={handleCreate}
+        >
+          Create Product
+        </button>
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="border border-gray-400 rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-amber-50 border border-gray-100">
+          {/* Table headers */}
           <thead className="bg-amber-50">
             <tr>
               <th className="px-4 py-2 border">ID</th>
@@ -68,8 +99,9 @@ export default function ProductTable() {
               <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
+          {/* Table body */}
           <tbody>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <tr key={product.id}>
                 <td className="px-4 py-2 border">{product.id}</td>
                 <td className="px-4 py-2 border">{product.name}</td>

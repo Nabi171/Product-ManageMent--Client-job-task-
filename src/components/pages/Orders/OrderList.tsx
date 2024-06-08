@@ -1,26 +1,6 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
-
-interface Variant {
-  id: number
-  product_id: number
-  color: string
-  specification: string
-  size: string
-  created_at: string
-  updated_at: string
-}
-
-interface OrderDetail {
-  id: number
-  order_id: number
-  variant_id: number
-  quantity: number
-  created_at: string
-  updated_at: string
-  variant: Variant
-}
 
 interface Order {
   id: number
@@ -30,7 +10,6 @@ interface Order {
   total_quantity: number
   created_at: string
   updated_at: string
-  details: OrderDetail[]
 }
 
 interface OrdersResponse {
@@ -53,12 +32,17 @@ interface OrdersResponse {
 
 const OrderList = () => {
   const [orders, setOrders] = useState<Order[]>([])
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
+  const [searchQuery, setSearchQuery] = useState<string>("")
   const navigate = useNavigate()
 
   useEffect(() => {
     fetch("https://reactjr.coderslab.online/api/orders")
       .then((response) => response.json())
-      .then((data: OrdersResponse) => setOrders(data.data.data || []))
+      .then((data: OrdersResponse) => {
+        setOrders(data.data.data || [])
+        setFilteredOrders(data.data.data || [])
+      })
       .catch((error) => console.error("Error fetching data:", error))
   }, [])
 
@@ -74,19 +58,42 @@ const OrderList = () => {
     }
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setSearchQuery(value)
+    const filtered = orders.filter(
+      (order) =>
+        order.name.toLowerCase().includes(value.toLowerCase()) ||
+        order.email.toLowerCase().includes(value.toLowerCase()) ||
+        order.address.toLowerCase().includes(value.toLowerCase()) ||
+        order.id.toString().toLowerCase().includes(value.toLowerCase()),
+    )
+    setFilteredOrders(filtered)
+  }
+
   return (
     <>
       <Navbar />
       <div className="container mx-auto px-4 py-2">
-        <button
-          onClick={() => navigate("/orders/create")}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
-        >
-          Create Order
-        </button>
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => navigate("/orders/create")}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Create Order
+          </button>
+          <input
+            type="text"
+            placeholder="Search by name, email, address, or ID..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="border border-gray-400 rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
         <h1 className="text-xl font-bold my-4">Order List</h1>
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto bg-amber-50 border border-gray-100">
+            {/* Table headers */}
             <thead className="bg-amber-50">
               <tr>
                 <th className="border px-4 py-2">ID</th>
@@ -98,8 +105,9 @@ const OrderList = () => {
                 <th className="border px-4 py-2">Actions</th>
               </tr>
             </thead>
+            {/* Table body */}
             <tbody>
-              {orders.map((order) => (
+              {filteredOrders.map((order) => (
                 <tr key={order.id}>
                   <td className="border px-4 py-2">{order.id}</td>
                   <td className="border px-4 py-2">{order.name}</td>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
 import Footer from "../Footer"
@@ -10,7 +10,7 @@ import {
   OrderForCreate,
 } from "../../types/globalTypes"
 
-const CreateOrder: React.FC = () => {
+const CreateOrder = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProducts, setSelectedProducts] = useState<number[]>([])

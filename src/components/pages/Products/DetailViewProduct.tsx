@@ -3,8 +3,11 @@ import { useParams } from "react-router-dom"
 import Navbar from "../../layouts/Navbar"
 import Footer from "../Footer"
 import { Product } from "../../types/globalTypes"
+// import { useGetProductsQuery } from "../../../redux/features/products/productApi"
 
 export default function ProductDetails() {
+  // // const { data: products, error, isLoading } = useGetProductsQuery()
+  // console.log(products, "this is by redux")
   const { id } = useParams<{ id: string }>()
   const [product, setProduct] = useState<Product | null>(null)
   console.log(product)
